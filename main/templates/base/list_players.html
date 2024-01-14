@@ -1,0 +1,54 @@
+{% extends "base/base.html" %} 
+
+{% block title %}- Listado de jugadores{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center">Listado de jugadores</h2>
+    <p class="text-center mb-4">Se muestra un total de {{ players|length }} jugadores</p>
+    
+    <table class="table table-bordered">
+        <thead>
+            <tr class="table-secondary">
+                <th scope="col">Jugador</th>
+                <th scope="col">Equipo actual</th>
+                <th scope="col">Edad</th>
+                <th scope="col">Nacionalidad</th>
+                <th scope="col">Posición</th>
+                <th scope="col">Valor de mercado</th>
+                <th scope="col">Tags</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for player in players %}
+            <tr class="table-light">
+                <td>
+                    <img src="{{ player.photoURL }}" alt="{{ player.name }} Photo" style="max-width: 50px" />
+                    {{ player.name }}
+                </td>
+                <td>
+                    <img src="{{ player.team_logoURL }}" alt="{{ player.team.name }} Logo" style="max-width: 50px" />
+                    {{ player.team }}
+                </td>
+                <td>{{ player.age }}</td>
+                <td>{{ player.nationality }}</td>
+                <td>{{ player.position }}</td>
+                <td>{{ player.market_value }} mill. €</td>
+                <td>
+                    {% for key, value in tags.items %}
+                        {% if key == player.name %}
+                            {% for tag in value %}
+                                <span class="badge bg-secondary">{{ tag }}</span>
+                            {% endfor %}
+                        {% endif %}
+                    {% endfor %}
+                </td>
+            </tr>
+            {% empty %}
+            <p>No hay jugadores para mostrar</p>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+</div>
+{% endblock %}

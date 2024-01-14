@@ -1,0 +1,69 @@
+{% extends "base/base.html" %}
+
+{% block title %}- Jugadores por equipo y valor de mercado{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Jugadores por equipo y valor de mercado</h2>
+    <p>
+        Selecciona un equipo y un rango de valor de mercado para obtener los jugadores que pertenecen a ese equipo y que tienen un valor de mercado dentro del rango seleccionado.
+    </p>
+    <hr />
+
+    <div class="row">
+        <div class="col-12 col-md-6">
+            <form action="{% url 'players_by_team_and_value' %}" method="POST">
+                {% csrf_token %} 
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-secondary">Buscar</button>
+            </form>
+        </div>
+    </div>
+
+        <hr />
+        <h3>Jugadores</h3>
+
+        <table class="table table-bordered">
+            <thead>
+                <tr class="table-secondary">
+                    <th scope="col">Jugador</th>
+                    <th scope="col">Equipo actual</th>
+                    <th scope="col">Edad</th>
+                    <th scope="col">Nacionalidad</th>
+                    <th scope="col">Posición</th>
+                    <th scope="col">Valor de mercado</th>
+                    <th scope="col">Tags</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for player in players %}
+                <tr class="table-light">
+                    <td>
+                        <img src="{{ player.photoURL }}" alt="{{ player.name }} Photo" style="max-width: 50px" />
+                        {{ player.name }}
+                    </td>
+                    <td>
+                        <img src="{{ player.team.logoURL }}" alt="{{ player.team.name }} Logo" style="max-width: 50px" />
+                        {{ player.team }}
+                    </td>
+                    <td>{{ player.age }}</td>
+                    <td>{{ player.nationality }}</td>
+                    <td>{{ player.position }}</td>
+                    <td>{{ player.market_value }} mill. €</td>
+                    <td>
+                        {% for key, value in tags.items %}
+                            {% if key == player.name %}
+                                {% for tag in value %}
+                                    <span class="badge bg-secondary">{{ tag }}</span>
+                                {% endfor %}
+                            {% endif %}
+                        {% endfor %}
+                    </td>
+                </tr>
+                {% empty %}
+                <p>No hay jugadores para mostrar</p>
+                {% endfor %}
+            </tbody>
+        </table>
+
+{% endblock %}

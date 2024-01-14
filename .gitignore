@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+*$py.class
+
+/db.sqlite3
+
+/dataRS.dat.bak
+/dataRS.dat.dat
+/dataRS.dat.dir
+
+/main/player_index/
+/main/team_index/

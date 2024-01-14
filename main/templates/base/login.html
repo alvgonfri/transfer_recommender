@@ -1,0 +1,20 @@
+{% extends "base/base.html" %} 
+
+{% block title %}- Iniciar sesión{% endblock %} 
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col"></div>
+        <div class="col bg-light p-4 rounded border">
+            <h2>Iniciar sesión</h2>
+            <form method="post" action="{% url 'login' %}" class="needs-validation" novalidate>
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-secondary">Iniciar sesión</button>
+            </form>
+        </div>
+        <div class="col"></div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends "base/base.html" %} 
+
+{% block title %}- Listado de equipos{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+    <h2 class="text-center">Listado de equipos</h2>
+    <p class="text-center mb-4">Se muestra un total de {{ teams|length }} equipos</p>
+
+    <div class="row">
+        {% for team in teams %}
+        <div class="col-md-6">
+            <div class="d-flex border border-secondary">
+                <div class="p-2 text-center bg-light border-end border-secondary">
+                    <img src="{{ team.logoURL }}" class="card-img-top" alt="{{ team.name }} Logo" style="width: 100px;">
+                    <div class="card-body">
+                        <p class="card-title fw-bold">{{ team.name }}</p>
+                    </div>
+                </div>
+                <div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Valor de mercado: {{ team.market_value }} mill. €</li>
+                        <li class="list-group-item">Edad promedio: {{ team.average_age }}</li>
+                        <li class="list-group-item">Porcentaje de extranjeros: {{ team.foreigner_percentage }}%</li>
+                        <li class="list-group-item">
+                            {% for key, value in tags.items %}
+                                {% if key == team.name %}
+                                    {% for tag in value %}
+                                        <span class="badge bg-secondary">{{ tag }}</span>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endfor %}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p>No hay equipos para mostrar</p>
+        {% endfor %}
+    </div>
+    
+</div>
+{% endblock %}

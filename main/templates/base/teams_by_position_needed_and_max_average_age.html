@@ -1,0 +1,58 @@
+{% extends "base/base.html" %}
+
+{% block title %}- Equipos por posición necesitada y edad promedio máxima{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Equipos por posición necesitada y edad promedio máxima</h2>
+    <p>
+        Selecciona una posición y una edad promedio máxima para obtener los equipos que necesitan jugadores en esa posición y cuya edad promedio no supere el valor ingresado.
+    </p>
+    <hr />
+
+    <div class="row">
+        <div class="col-12 col-md-6">
+            <form action="{% url 'teams_by_position_needed_and_max_average_age' %}" method="POST">
+                {% csrf_token %} 
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-secondary">Buscar</button>
+            </form>
+        </div>
+    </div>
+
+        <hr />
+        <h3>Equipos</h3>
+        <div class="row">
+            {% for team in teams %}
+            <div class="col-md-6 mb-4">
+                <div class="d-flex border border-secondary">
+                    <div class="p-2 text-center bg-light border-end border-secondary">
+                        <img src="{{ team.logoURL }}" class="card-img-top" alt="{{ team.name }} Logo" style="width: 100px;">
+                        <div class="card-body">
+                            <p class="card-title fw-bold">{{ team.name }}</p>
+                        </div>
+                    </div>
+                    <div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Valor de mercado: {{ team.market_value }} mill. €</li>
+                            <li class="list-group-item">Edad promedio: {{ team.average_age }}</li>
+                            <li class="list-group-item">Porcentaje de extranjeros: {{ team.foreigner_percentage }}%</li>
+                            <li class="list-group-item">
+                                {% for key, value in tags.items %}
+                                    {% if key == team.name %}
+                                        {% for tag in value %}
+                                            <span class="badge bg-secondary">{{ tag }}</span>
+                                        {% endfor %}
+                                    {% endif %}
+                                {% endfor %}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <p>No hay equipos para mostrar</p>
+            {% endfor %}
+        </div>
+
+{% endblock %}

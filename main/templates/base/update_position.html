@@ -1,0 +1,65 @@
+{% extends "base/base.html" %}
+
+{% block title %}- Modificar posición{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Modificar posición</h2>
+    <p>
+        Selecciona un jugador y una posición para modificar la posición del jugador.
+    </p>
+    <hr />
+
+    <div class="row">
+        <div class="col-12 col-md-6">
+            <form action="{% url 'update_position' %}" method="POST">
+                {% csrf_token %} 
+                {{ form.player }}
+                {{ form.position }}
+                <button type="submit" class="btn btn-secondary">Modificar</button>
+            </form>
+        </div>
+    </div>
+
+        {% if player %}
+            <hr />
+            <h3>Jugador modificado</h3>
+
+            <table class="table table-bordered">
+                <thead>
+                    <tr class="table-secondary">
+                        <th scope="col">Jugador</th>
+                        <th scope="col">Equipo actual</th>
+                        <th scope="col">Edad</th>
+                        <th scope="col">Nacionalidad</th>
+                        <th scope="col">Posición</th>
+                        <th scope="col">Valor de mercado</th>
+                        <th scope="col">Tags</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="table-light">
+                        <td>
+                            <img src="{{ player.photoURL }}" alt="{{ player.name }} Photo" style="max-width: 50px" />
+                            {{ player.name }}
+                        </td>
+                        <td>
+                            <img src="{{ player.team.logoURL }}" alt="{{ player.team.name }} Logo" style="max-width: 50px" />
+                            {{ player.team }}
+                        </td>
+                        <td>{{ player.age }}</td>
+                        <td>{{ player.nationality }}</td>
+                        <td>{{ player.position }}</td>
+                        <td>{{ player.market_value }} mill. €</td>
+                        <td>
+                            {% for tag in player.tags.all %}
+                                <span class="badge bg-secondary">{{ tag }}</span>
+                            {% endfor %}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        {% endif %}
+
+
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends "base/base.html" %} 
+
+{% block title %}- Inicio{% endblock %} 
+
+{% block content %}
+<div class="container mt-4">
+    {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-info alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+    {% endif %}
+
+    <p class="text-center fs-5 mb-4"><b>Transfer Recommender</b> es una aplicación web que te permite realizar consultas sobre los equipos y jugadores de LaLiga, así como también realiza recomendaciones de equipos y jugadores</p>
+
+    <div class="row">
+        <div class="col-6">
+            <div class="text-center bg-light border rounded p-2">
+                <h5>Consultas</h5>
+                <div class="list-group">
+                    <a href="{% url 'list_teams' %}" class="list-group-item list-group-item-action">Listar equipos</a>
+                    <a href="{% url 'list_players' %}" class="list-group-item list-group-item-action">Listar jugadores</a>
+                    <a href="{% url 'teams_by_position_needed_and_max_average_age' %}" class="list-group-item list-group-item-action">Equipos por posición necesitada y edad promedio máxima</a>
+                    <a href="{% url 'players_by_team_and_value' %}" class="list-group-item list-group-item-action">Jugadores por equipo y valor de mercado</a>
+                    <a href="{% url 'players_by_name_or_nationality' %}" class="list-group-item list-group-item-action">Jugadores por nombre o nacionalidad</a>
+                    <a href="{% url 'update_position' %}" class="list-group-item list-group-item-action">Modificar posición</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="text-center bg-light border rounded p-2">
+                <h5>Recomendaciones</h5>
+                <div class="list-group">
+                    <a href="{% url 'recommend_teams' %}" class="list-group-item list-group-item-action">Recomendación de equipos</a>
+                    <a href="{% url 'recommend_players' %}" class="list-group-item list-group-item-action">Recomendación de jugadores</a>
+                    <a href="{% url 'similar_teams' %}" class="list-group-item list-group-item-action">Equipos similares</a>
+                    <a href="{% url 'similar_players' %}" class="list-group-item list-group-item-action">Jugadores similares</a>
+                </div> 
+            </div>
+        </div>
+    </div>
+    
+</div>
+{% endblock %}

@@ -1,0 +1,78 @@
+{% extends "base/base.html" %}
+
+{% block title %}- Equipos similares{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Equipos similares</h2>
+    <p>
+        Selecciona un equipo para obtener 3 equipos similares
+    </p>
+    <hr />
+
+    <div class="row">
+        <div class="col-12 col-md-6">
+            <form action="{% url 'similar_teams' %}" method="POST">
+                {% csrf_token %} 
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-secondary">Obtener</button>
+            </form>
+        </div>
+    </div>
+
+    {% if teams %}
+    <hr />
+    <h4>Equipos similares a {{ team.name }}</h4>
+
+    <div class="d-flex border border-secondary mb-2">
+        <div class="p-2 text-center bg-light border-end border-secondary">
+            <img src="{{ team.logoURL }}" class="card-img-top" alt="{{ team.name }} Logo" style="width: 100px" />
+            <div class="card-body">
+                <p class="card-title fw-bold">{{ team.name }}</p>
+            </div>
+        </div>
+        <div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    Valor de mercado: {{ team.market_value }} mill. €
+                </li>
+                <li class="list-group-item">Edad promedio: {{ team.average_age }}</li>
+                <li class="list-group-item">
+                    Porcentaje de extranjeros: {{ team.foreigner_percentage }}%
+                </li>
+                <li class="list-group-item">
+                    {% for tag in team.tags.all %}
+                        <span class="badge bg-secondary">{{ tag }}</span>
+                    {% endfor %}
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-between mb-4"> 
+        {% for team in teams %}
+                <div class="d-flex border border-secondary">
+                    <div class="p-2 text-center bg-light border-end border-secondary">
+                        <img src="{{ team.logoURL }}" class="card-img-top" alt="{{ team.name }} Logo" style="width: 100px;">
+                        <div class="card-body">
+                            <p class="card-title fw-bold">{{ team.name }}</p>
+                        </div>
+                    </div>
+                    <div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Valor de mercado: {{ team.market_value }} mill. €</li>
+                            <li class="list-group-item">Edad promedio: {{ team.average_age }}</li>
+                            <li class="list-group-item">Porcentaje de extranjeros: {{ team.foreigner_percentage }}%</li>
+                            <li class="list-group-item">
+                                {% for tag in team.tags.all %}
+                                    <span class="badge bg-secondary">{{ tag }}</span>
+                                {% endfor %}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+        {% endfor %}
+        </div> 
+    {% endif %}
+</div>
+{% endblock %}

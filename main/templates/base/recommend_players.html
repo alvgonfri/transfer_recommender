@@ -1,0 +1,91 @@
+{% extends "base/base.html" %}
+
+{% block title %}- Recomendación de jugadores {% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Recomendación de jugadores</h2>
+    <p>
+        Selecciona un equipo para obtener los 10 jugadores recomendados para él
+    </p>
+    <hr />
+
+    <div class="row">
+        <div class="col-12 col-md-6">
+            <form action="{% url 'recommend_players' %}" method="POST">
+                {% csrf_token %} 
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-secondary">Recomendar</button>
+            </form>
+        </div>
+    </div>
+
+    {% if players %}
+    <hr />
+    <h4>Jugadores recomendados para {{ team.name }}</h4>
+
+    <div class="d-flex border border-secondary mb-2">
+        <div class="p-2 text-center bg-light border-end border-secondary">
+            <img src="{{ team.logoURL }}" class="card-img-top" alt="{{ team.name }} Logo" style="width: 100px" />
+            <div class="card-body">
+                <p class="card-title fw-bold">{{ team.name }}</p>
+            </div>
+        </div>
+        <div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    Valor de mercado: {{ team.market_value }} mill. €
+                </li>
+                <li class="list-group-item">Edad promedio: {{ team.average_age }}</li>
+                <li class="list-group-item">
+                    Porcentaje de extranjeros: {{ team.foreigner_percentage }}%
+                </li>
+                <li class="list-group-item">
+                    {% for tag in team.tags.all %}
+                        <span class="badge bg-secondary">{{ tag }}</span>
+                    {% endfor %}
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr class="table-secondary">
+                <th scope="col">Jugador</th>
+                <th scope="col">Equipo actual</th>
+                <th scope="col">Edad</th>
+                <th scope="col">Nacionalidad</th>
+                <th scope="col">Posición</th>
+                <th scope="col">Valor de mercado</th>
+                <th scope="col">Tags</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for player in players %}
+            <tr class="table-light">
+                <td>
+                    <img src="{{ player.photoURL }}" alt="{{ player.name }} Photo" style="max-width: 50px" />
+                    {{ player.name }}
+                </td>
+                <td>
+                    <img src="{{ player.team.logoURL }}" alt="{{ player.team.name }} Logo" style="max-width: 50px" />
+                    {{ player.team.name }}
+                </td>
+                <td>{{ player.age }}</td>
+                <td>{{ player.nationality }}</td>
+                <td>{{ player.position }}</td>
+                <td>{{ player.market_value }} mill. €</td>
+                <td>
+                    {% for tag in player.tags.all %}
+                        <span class="badge bg-secondary">{{ tag }}</span>
+                    {% endfor %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% endif %}
+</div>
+{% endblock %}
